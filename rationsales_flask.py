@@ -9,7 +9,7 @@ import json
 import time
 import concurrent.futures
 import numpy as np
-
+pd.set_option('display.max_rows' , None)
 
 app = Flask(__name__)
 
@@ -88,12 +88,14 @@ class RemainingCards:
         self.probability = 100 - (self.probability * 100)
         self.probability[self.probability < 0] = 0
         self.probability.name = 'Percentage'
+        # print(self.probability)
 
     def merge_sales_data(self, sales_data):
         self.fetch_remaining_cards_data()
         self.calculate_probability()
         yetTOcome = self.cardBase[self.cardBase['SRC No'].isin(sales_data.df['SRC No'].astype('float'))==False].sort_values(by = 'REF').fillna(0).astype('int64').reset_index(drop = True)
         yetTOcome = yetTOcome.merge(self.probability, on = 'SRC No',how = 'left')
+        # print(yetTOcome)
         return yetTOcome
 
 
@@ -101,6 +103,7 @@ class CardStatus:
     def __init__(self, yetTOcome):
         self.yetTOcome = yetTOcome
         self.statusDataFrame = []
+        # print(self.yetTOcome)
 
     @staticmethod
     def make_request(i, month, year):
@@ -126,10 +129,14 @@ class CardStatus:
             for future in concurrent.futures.as_completed(futures):
                 result = future.result()
                 status.append(result)
+
         self.statusDataFrame = pd.DataFrame(status, columns=['SRC No', 'Status'])
-        cardStatus = self.statusDataFrame.merge(self.yetTOcome , on = 'SRC No')
-        cardStatus[cardStatus.select_dtypes(['int']).columns] = cardStatus.select_dtypes(['int']).replace(to_replace= 0 , value = np.nan).sort_values(by = ['REF', 'SRC No']).fillna(0).astype('int64').reset_index(drop = True)
-    
+        cardStatus = self.statusDataFrame.merge(self.yetTOcome , on = 'SRC No' , how='left')
+        # print(cardStatus)
+        cardStatus['REF'] = cardStatus['REF'].replace(to_replace=0 , value=np.nan)
+        cardStatus =  cardStatus.sort_values(by=['REF','SRC No'])
+        cardStatus['REF'] =  cardStatus['REF'].fillna(0).astype('int')
+        cardStatus.reset_index(drop=True , inplace=True)
         return cardStatus
 
 class SaveData:
@@ -194,7 +201,7 @@ def get_sales_data():
     sales_data.fetch_data()
     sales_data_json = sales_data.dailysales.astype('int').reset_index().to_json(orient='records')
     sales_data_list = json.loads(sales_data_json)
-    print(sales_data.dailysales.astype('int').reset_index())
+    # print(sales_data.dailysales.astype('int').reset_index())
 
 
     return render_template('sales_table.html', data=sales_data_list)
