@@ -160,7 +160,14 @@ class SaveData:
             self.dailysales.to_excel(writer, sheet_name='dailysales')
             self.availability.to_excel(writer, sheet_name='remaining_cards' , index = False)
 
+def getStockreport():
+    month = datetime.now().month
+    year = datetime.now().year
 
+    sales_data = SalesData(month, year)
+    sales_data.fetch_data()
+
+    return sales_data
 
 def main():
 #     month = int(input('Enter the month: '))
@@ -181,7 +188,7 @@ def main():
     # ExcelData= SaveData(sales_data , Availability)
     # ExcelData.saveFiles()
 
-    return Availability, sales_data
+    return Availability
     
 # ____________________________READ___________________________________    
 #Note : We need to change the path while we change the system 
@@ -193,7 +200,7 @@ def main():
 
 @app.route('/availability', methods=['GET'])
 def get_availability():
-    Availability, sales_data = main()
+    Availability = main()
     # Sort the DataFrame by the "Date" column
     # sorted_availability = Availability.sort_values('REF')
 
@@ -226,19 +233,7 @@ def serve_css():
     return send_from_directory(app.static_folder, 'styles.css', mimetype='text/css')
 
 
-
-
 # Trigger the main function when running the script
-
-def getStockreport():
-    month = datetime.now().month
-    year = datetime.now().year
-
-    sales_data = SalesData(month, year)
-    sales_data.fetch_data()
-
-    return sales_data
-
 
 if __name__ == "__main__":
     Availability, sales_data = main()
