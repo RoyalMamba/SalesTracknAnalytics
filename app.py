@@ -193,7 +193,15 @@ def main():
 
 @app.route('/availability', methods=['GET'])
 def get_availability():
-    return jsonify(Availability)
+    Availability, sales_data = main()
+    # Sort the DataFrame by the "Date" column
+    # sorted_availability = Availability.sort_values('REF')
+
+    # Convert the sorted DataFrame to an HTML table
+    availability_table = Availability.to_html(index=True, classes='data-table')
+
+    # Render the template and pass the availability table HTML
+    return render_template('availability.html', availability_table=availability_table)
 
 
 @app.route('/sales', methods=['GET'])
@@ -209,15 +217,7 @@ def get_sales_data():
 
 @app.route('/')
 def index():
-    Availability, sales_data = main()
-    # Sort the DataFrame by the "Date" column
-    # sorted_availability = Availability.sort_values('REF')
-
-    # Convert the sorted DataFrame to an HTML table
-    availability_table = Availability.to_html(index=True, classes='data-table')
-
-    # Render the template and pass the availability table HTML
-    return render_template('index.html', availability_table=availability_table)
+    return render_template('index.html')
 
 
 
@@ -231,5 +231,5 @@ def serve_css():
 # Trigger the main function when running the script
 if __name__ == "__main__":
     Availability, sales_data = main()
-    app.run(host='0.0.0.0', port=8080)
+    app.run(debug=True)
 
