@@ -24,6 +24,14 @@ table {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
+tbody tr:nth-child(even) {
+  background-color: #f1f1f1;  /* Add a different shade for even rows */
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #ffffff;  /* Add the default shade for odd rows */
+}
+
 th,
 td {
   padding: 10px;
