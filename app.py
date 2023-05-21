@@ -206,6 +206,7 @@ def get_availability():
 
 @app.route('/sales', methods=['GET'])
 def get_sales_data():
+    global sales_data
     sales_data.fetch_data()
     sales_data_json = sales_data.dailysales.astype('int').reset_index().to_json(orient='records')
     sales_data_list = json.loads(sales_data_json)
@@ -230,6 +231,7 @@ def serve_css():
 
 # Trigger the main function when running the script
 if __name__ == "__main__":
+    global sales_data
     Availability, sales_data = main()
     app.run()
 
