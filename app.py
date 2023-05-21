@@ -66,11 +66,11 @@ class RemainingCards:
         self.pathlist = []
         self.sheetname = 'remaining_cards'
         self.remaining_cards = pd.DataFrame()
-        self.cardBase = pd.read_excel(r'Daily sales\dataset/remaningcards.xlsx')
+        self.cardBase = pd.read_excel(r'dataset/Daily sales/data/remaningcards.xlsx')
         self.probability = None
 
     def fetch_remaining_cards_data(self):
-        for dir, subdir, files in os.walk(r'Daily sales\ds_excel'):
+        for dir, subdir, files in os.walk(r'dataset/Daily sales/ds_excel'):
             for file in files:
                 self.pathlist.append(os.path.join(dir, file))
 
@@ -149,7 +149,7 @@ class SaveData:
     
         year = self.dailysales.index[0][:4]
         monthstring = datetime.strptime(self.dailysales.index[0] , '%Y-%m-%d').strftime('_%m_%Y.xlsx')
-        savepath = r'Daily sales\ds_excel/'
+        savepath = r'dataset/Daily sales/ds_excel/'
         directory = os.path.exists(savepath+year)
         if not directory:
             os.mkdir(savepath+year)
