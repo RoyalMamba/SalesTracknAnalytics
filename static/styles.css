@@ -1,36 +1,10 @@
-/* Custom styles for the table */
-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  th {
-    background-color: #f2f2f2;
-  }
-  
-  /* Additional styles for visual enhancements */
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-  }
-  
-  h1 {
-    color: #333;
-  }
-  
-  .container {
-    max-width: 800px;
-    margin: 0 auto;
-  }
+/* styles.css */
 
-  td:first-child {
-    white-space: nowrap;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+  background-color: #f2f2f2;
 }
 
 h1 {
@@ -65,10 +39,6 @@ th {
   z-index: 1;
 }
 
-td:first-child {
-  white-space: nowrap;
-}
-
 /* CSS for mobile devices */
 @media only screen and (max-width: 600px) {
   table {
@@ -81,9 +51,33 @@ td:first-child {
   }
 }
 
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.button-container a {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #4caf50;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  text-decoration: none;
+}
+
+.button-container a:hover {
+  background-color: #45a049;
+}
+
 .refresh-button {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin-top: 20px;
 }
 
@@ -101,45 +95,3 @@ td:first-child {
 .refresh-button button:hover {
   background-color: #45a049;
 }
-
-.back-button {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 20px;
-}
-
-.back-button a {
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #4caf50;
-  color: #ffffff;
-  text-decoration: none;
-  border-radius: 4px;
-  transition: background-color 0.3s;
-}
-
-.back-button a:hover {
-  background-color: #45a049;
-}
-
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #888;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-</style>
-<script>
-function refreshData() {
-  location.reload();
-}
-</script>
