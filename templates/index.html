@@ -1,94 +1,73 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f2f2f2;
-        }
-
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .table-container {
-            max-width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #dddddd;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        /* CSS for mobile devices */
-        @media only screen and (max-width: 600px) {
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 6px;
-            }
-        }
-
-        .refresh-button {
+            padding: 0;
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(to bottom right, #c97713, #8d330c);
         }
+        .container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    }
+    
+    h1 {
+        color: #333333;
+        margin-bottom: 30px;
+    }
+    
+    .button {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: #ffffff;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s;
+        font-size: 16px;
+        border: none;
+        cursor: pointer;
+    }
+    
+    .button:hover {
+        background-color: #45a049;
+    }
+    
+    @media (max-width: 768px) {
+        body {
+            background: #FFD700;
+        }
+        
+        .container {
+            grid-template-columns: 1fr;
+        }
+    }
+</style>
 
-        .refresh-button button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4caf50;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .refresh-button button:hover {
-            background-color: #45a049;
-        }
-    </style>
-    <script>
-        function refreshData() {
-            location.reload();
-        }
-    </script>
 </head>
-
 <body>
-    <h1>Availability Table</h1>
-    {{ availability_table|safe }}
-    <div class="refresh-button">
-        <button onclick="refreshData()">Refresh</button>
+    <div class="container">
+        <div class="sales-container">
+            <h2>Sales</h2>
+            <a href="/sales" class="button">Go to Sales</a>
+        </div>
+        <div class="availability-container">
+            <h2>Availability</h2>
+            <a href="/availability" class="button">Go to Availability</a>
+        </div>
     </div>
 </body>
-
 </html>
