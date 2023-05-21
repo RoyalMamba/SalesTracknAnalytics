@@ -1,94 +1,23 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f2f2f2;
-        }
+    <link rel="stylesheet" href="/static/styles.css">
 
-        h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .table-container {
-            max-width: 100%;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background-color: #ffffff;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: center;
-            border-bottom: 1px solid #dddddd;
-        }
-
-        th {
-            background-color: #4CAF50;
-            color: #ffffff;
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
-
-        /* CSS for mobile devices */
-        @media only screen and (max-width: 600px) {
-            table {
-                font-size: 12px;
-            }
-
-            th,
-            td {
-                padding: 6px;
-            }
-        }
-
-        .refresh-button {
-            display: flex;
-            justify-content: center;
-            margin-top: 20px;
-        }
-
-        .refresh-button button {
-            padding: 10px 20px;
-            font-size: 16px;
-            background-color: #4caf50;
-            color: #ffffff;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s;
-        }
-
-        .refresh-button button:hover {
-            background-color: #45a049;
-        }
-    </style>
-    <script>
-        function refreshData() {
-            location.reload();
-        }
-    </script>
+<script>
+    function refreshData() {
+        location.reload();
+    }
+</script>
 </head>
-
 <body>
-    <h1>Availability Table</h1>
-    {{ availability_table|safe }}
-    <div class="refresh-button">
-        <button onclick="refreshData()">Refresh</button>
+    <div class="button-container">
+        <a href="/" class="button">Home</a>
+        <div class="refresh-button">
+            <button onclick="refreshData()" class="button">Refresh</button>
+        </div>
     </div>
+    <h1 style="text-align: center;">Availability Table</h1>
+    {{ availability_table|safe }}
 </body>
-
 </html>
