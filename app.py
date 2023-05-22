@@ -236,5 +236,9 @@ def serve_css():
 # Trigger the main function when running the script
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     Availability = main()
     app.run(debug=True)
+=======
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
+>>>>>>> fc688ec099720b0ab6d51e524fc22c7fcb06b1ee
