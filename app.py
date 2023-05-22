@@ -236,5 +236,4 @@ def serve_css():
 # Trigger the main function when running the script
 
 if __name__ == "__main__":
-    Availability, sales_data = main()
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
