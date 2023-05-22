@@ -236,5 +236,5 @@ def serve_css():
 # Trigger the main function when running the script
 
 if __name__ == "__main__":
-    Availability, sales_data = main()
+    Availability = main()
     app.run(debug=True)
