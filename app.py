@@ -185,14 +185,14 @@ def main():
     StatusClass = CardStatus(dataToFetch)
     Availability = StatusClass.fetch_status(month,year)
     
-    # ExcelData= SaveData(sales_data , Availability)
-    # ExcelData.saveFiles()
+    ExcelData= SaveData(sales_data , Availability)
+    ExcelData.saveFiles()
 
     return Availability
     
 # ____________________________READ___________________________________    
 #Note : We need to change the path while we change the system 
-# In total there are three different paths are we should take care of 
+# In total there are three different paths that we should take care of 
 # 1. >> GOTO Class Remaining_Cards> __init__ >> self.CardBase 
 # 2. >> GOTO Class Remaining_Cards> fetch_remaining_cards_data >> os.walk
 # 3. >> GOTO Class SaveData >> saveFiles >> savepath
@@ -236,9 +236,4 @@ def serve_css():
 # Trigger the main function when running the script
 
 if __name__ == "__main__":
-<<<<<<< HEAD
-    Availability = main()
-    app.run(debug=True)
-=======
     app.run(debug=True, host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
->>>>>>> fc688ec099720b0ab6d51e524fc22c7fcb06b1ee
