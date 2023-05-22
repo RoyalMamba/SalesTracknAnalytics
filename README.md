@@ -24,9 +24,7 @@ To deploy the SalesTracknAnalytics project, follow these steps:
 
 3. Run the Flask backend: `python main.py`
 
-4. Run the React frontend: `npm start`
-
-5. Access the application through a web browser at `http://localhost:3000`.
+4. Access the application through a web browser at `http://localhost:3000`.
 
 Note: Make sure to configure the necessary paths and URLs in the code according to your system setup.
 
