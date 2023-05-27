@@ -22,7 +22,7 @@ To deploy the SalesTracknAnalytics project, follow these steps:
 
 2. Install the necessary dependencies for the Flask backend and frontend.
 
-3. Run the Flask backend: `python main.py`
+3. Run the Flask backend: `python app.py`
 
 4. Access the application through a web browser at `http://localhost:8080`.
 
