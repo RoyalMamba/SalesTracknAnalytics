@@ -215,11 +215,12 @@ def get_availability():
 def get_sales_data():
     sales_data = getStockreport()
     sales_data_json = sales_data.dailysales.astype('int').reset_index().to_json(orient='records')
+    columns = sales_data.dailysales.reset_index().columns
     sales_data_list = json.loads(sales_data_json)
     # print(sales_data.dailysales.astype('int').reset_index())
 
 
-    return render_template('sales_table.html', data=sales_data_list)
+    return render_template('sales_table.html', data=sales_data_list , columns= columns)
 
 
 @app.route('/')

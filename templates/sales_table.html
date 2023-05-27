@@ -23,22 +23,20 @@
         <table>
             <thead>
                 <tr>
-                    <th>Date</th>
-                    <th>Wheat(Kgs)</th>
-                    <th>Rice(Kgs)</th>
-                    <th>FRice(Kgs)</th>
-                    <th>Sale Count</th>
+                    <!-- Loop through column names to generate table headers -->
+                    {% for column in columns %}
+                    <th>{{ column }}</th>
+                    {% endfor %}
                 </tr>
             </thead>
             <tbody>
                 <!-- Loop through each row in the JSON data -->
                 {% for row in data %}
                 <tr>
-                    <td>{{ row['Date'] }}</td>
-                    <td>{{ row['Wheat(Kgs)'] }}</td>
-                    <td>{{ row['Rice(Kgs)'] }}</td>
-                    <td>{{ row['FRice(Kgs)'] }}</td>
-                    <td>{{ row['Sale Count'] }}</td>
+                    <!-- Loop through each column value in the row -->
+                    {% for column in columns %}
+                    <td>{{ row[column] }}</td>
+                    {% endfor %}
                 </tr>
                 {% endfor %}
             </tbody>
