@@ -9,7 +9,6 @@ import json
 import time
 import concurrent.futures
 import numpy as np
-pd.set_option('display.max_rows' , None)
 
 app = Flask(__name__)
 
