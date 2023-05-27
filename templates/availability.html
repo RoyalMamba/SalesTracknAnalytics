@@ -4,11 +4,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
 
-<script>
-    function refreshData() {
-        location.reload();
-    }
-</script>
+    <script>
+        function refreshData() {
+            location.reload();
+        }
+
+        window.addEventListener("DOMContentLoaded", function() {
+            var rows = document.querySelectorAll("table tr");
+            for (var i = 1; i < rows.length; i++) {
+                var percentageCell = rows[i].cells[5];
+                var percentage = parseFloat(percentageCell.textContent);
+                if (percentage >= 66) {
+                    percentageCell.classList.add("green");
+                } else if (percentage >= 30) {
+                    percentageCell.classList.add("yellow");
+                } else {
+                    percentageCell.classList.add("red");
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="button-container">
