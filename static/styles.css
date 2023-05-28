@@ -150,22 +150,24 @@ th {
   overflow-x: scroll;
 }
 
-table tr td:first-child{
+table tr td:first-child,
+table tr th:first-child {
   position: sticky;
   left: 0;
   z-index: 2;
+  max-width: 200px; /* Adjust the max-width value as needed */
+  white-space: nowrap; /* Prevent line breaks within the date column */
+  overflow: hidden; /* Hide any overflowing content */
+  text-overflow: ellipsis; /* Show ellipsis (...) for truncated content */
 }
-
-table tr th:first-child{
-  position: sticky;
-  left: 0;
-  z-index: 2;
-}
-
 table tr:nth-child(even) td:first-child {
   background-color: #f1f1f1;  /* Add a different shade for even rows */
 }
 
 table tr:nth-child(odd) td:first-child {
   background-color: #ffffff;  /* Add a different shade for even rows */
+}
+
+tbody tr:last-child {
+  font-weight: bolder;
 }
