@@ -160,10 +160,10 @@ class SaveData:
             self.availability.to_excel(writer, sheet_name='remaining_cards' , index = False)
 
 def getStockreport():
-    month = int(input('Enter the month: '))
-    year = int(input("Enter the year: "))
-    # month = datetime.now().month
-    # year = datetime.now().year
+    # month = int(input('Enter the month: '))
+    # year = int(input("Enter the year: "))
+    month = datetime.now().month
+    year = datetime.now().year
 
     sales_data = SalesData(month, year)
     sales_data.fetch_data()
