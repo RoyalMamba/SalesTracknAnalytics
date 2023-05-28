@@ -86,7 +86,7 @@ class RemainingCards:
         self.probability = round(self.probability / total_months, 4)
         self.probability = 100 - (self.probability * 100)
         self.probability[self.probability < 0] = 0
-        self.probability.name = 'Percentage'
+        self.probability.name = 'Probability'
         # print(self.probability)
 
     def merge_sales_data(self, sales_data):
