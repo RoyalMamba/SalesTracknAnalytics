@@ -20,27 +20,29 @@
             </div>
         </div>
         <h1>Stock Report</h1>
-        <table>
-            <thead>
-                <tr>
-                    <!-- Loop through column names to generate table headers -->
-                    {% for column in columns %}
-                    <th>{{ column }}</th>
+        <div class="table-div">
+            <table>
+                <thead>
+                    <tr>
+                        <!-- Loop through column names to generate table headers -->
+                        {% for column in columns %}
+                        <th>{{ column }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Loop through each row in the JSON data -->
+                    {% for row in data %}
+                    <tr>
+                        <!-- Loop through each column value in the row -->
+                        {% for column in columns %}
+                        <td>{{ row[column] }}</td>
+                        {% endfor %}
+                    </tr>
                     {% endfor %}
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Loop through each row in the JSON data -->
-                {% for row in data %}
-                <tr>
-                    <!-- Loop through each column value in the row -->
-                    {% for column in columns %}
-                    <td>{{ row[column] }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 
