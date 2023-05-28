@@ -3,12 +3,39 @@
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/static/styles.css">
+    <script src="/static/js/jquery-3.7.0.min.js"></script>
+    <script src="/static/js/jquery.tablesorter.min.js"></script>
+    <script>
+        function refreshData() {
+            location.reload();
+        }
 
-<script>
-    function refreshData() {
-        location.reload();
-    }
-</script>
+        $(document).ready(function() {
+            $('.data-table').tablesorter({
+                widgets: ['zebra', 'columns'],
+                theme: 'default',
+                headerTemplate: '{content} {icon}',
+                widgetsOptions: {
+                    columns: {
+                        sorter: 'text'
+                    }
+                }
+            });
+            
+            var rows = document.querySelectorAll("table tr");
+            for (var i = 1; i < rows.length; i++) {
+                var percentageCell = rows[i].cells[5];
+                var percentage = parseFloat(percentageCell.textContent);
+                if (percentage >= 66) {
+                    percentageCell.classList.add("green");
+                } else if (percentage >= 30) {
+                    percentageCell.classList.add("yellow");
+                } else {
+                    percentageCell.classList.add("red");
+                }
+            }
+        });
+    </script>
 </head>
 <body>
     <div class="button-container">
