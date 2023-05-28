@@ -7,8 +7,17 @@ body {
 
 h1 {
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 16px;
+  font-family: "Roboto", sans-serif;
+  font-size: 32px;
+  color: #333333;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 8px;
 }
+
 
 .table-container {
   max-width: 100%;
@@ -102,4 +111,37 @@ th {
 
 .refresh-button button:hover {
   background-color: #45a049;
+}
+
+.green {
+  background-color: rgba(0, 255, 0, 0.3); /* Light green with 30% opacity */
+}
+
+.yellow {
+  background-color: rgba(255, 255, 0, 0.4); /* Light yellow with 40% opacity */
+}
+
+.red {
+  background-color: rgba(255, 0, 0, 0.3); /* Light red with 30% opacity */
+}
+
+/* Add the CSS for the sorting arrows */
+.tablesorter-headerAsc::after,
+.tablesorter-headerDesc::after {
+    content: "";
+    display: inline-block;
+    margin-left: 5px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 4px;
+    transition: border-color 0.2s;
+}
+
+.tablesorter-headerAsc::after {
+    border-color: transparent transparent #000000 transparent;
+}
+
+.tablesorter-headerDesc::after {
+    border-color: #000000 transparent transparent transparent;
 }

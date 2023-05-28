@@ -9,7 +9,6 @@ import json
 import time
 import concurrent.futures
 import numpy as np
-pd.set_option('display.max_rows' , None)
 
 app = Flask(__name__)
 
@@ -87,7 +86,7 @@ class RemainingCards:
         self.probability = round(self.probability / total_months, 4)
         self.probability = 100 - (self.probability * 100)
         self.probability[self.probability < 0] = 0
-        self.probability.name = 'Percentage'
+        self.probability.name = 'Probability'
         # print(self.probability)
 
     def merge_sales_data(self, sales_data):
@@ -161,6 +160,8 @@ class SaveData:
             self.availability.to_excel(writer, sheet_name='remaining_cards' , index = False)
 
 def getStockreport():
+    # month = int(input('Enter the month: '))
+    # year = int(input("Enter the year: "))
     month = datetime.now().month
     year = datetime.now().year
 
@@ -216,6 +217,7 @@ def get_sales_data():
     sales_data = getStockreport()
     sales_data_json = sales_data.dailysales.astype('int').reset_index().to_json(orient='records')
     columns = sales_data.dailysales.reset_index().columns
+    # print(columns)
     sales_data_list = json.loads(sales_data_json)
     # print(sales_data.dailysales.astype('int').reset_index())
 
