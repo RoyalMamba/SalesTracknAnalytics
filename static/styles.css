@@ -146,24 +146,20 @@ th {
     border-color: #000000 transparent transparent transparent;
 }
 
-table thead th{
-  position: sticky;
-  top: 0;
-  z-index: 1;
+.table-div {
+  overflow-x: scroll;
 }
 
-table thead th:first-child{
+table tr td:first-child,
+table tr th:first-child {
   position: sticky;
   left: 0;
   z-index: 2;
+  max-width: 200px; /* Adjust the max-width value as needed */
+  white-space: nowrap; /* Prevent line breaks within the date column */
+  overflow: hidden; /* Hide any overflowing content */
+  text-overflow: ellipsis; /* Show ellipsis (...) for truncated content */
 }
-
-table tbody td:first-child{
-  position: sticky;
-  left: 0;
-  z-index: 1;
-}
-
 table tr:nth-child(even) td:first-child {
   background-color: #f1f1f1;  /* Add a different shade for even rows */
 }

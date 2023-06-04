@@ -9,7 +9,6 @@ import json
 import time
 import concurrent.futures
 import numpy as np
-from dateutil import relativedelta 
 
 app = Flask(__name__)
 
@@ -25,36 +24,32 @@ class SalesData:
     def fetch_data(self):
         response = requests.post('https://mahaepos.gov.in/FPS_Trans_Details.jsp',
                                  data={'dist_code': 2518, 'fps_id': 251832900166, 'month': self.month, 'year': self.year})
-        
-        response_html = response.text 
-        soup = BeautifulSoup(response_html, 'html.parser')
-        table = soup.find('table')
-        if table: 
-            self.extract_headers(response)
-            self.extract_dataframe()
-        else : 
-            date = datetime.now() - relativedelta.relativedelta(months =1 )
-            self.month = date.month
-            self.year = date.year 
-            self.fetch_data()
-            
+        soup = BeautifulSoup(response.text, 'html.parser')
+        self.extract_headers(soup)
+        self.extract_dataframe(response, soup)
 
+    def extract_headers(self, soup):
+        self.headers = []
+        thElements = [x.text.strip() for x in soup.find_all('th')]
+        for i in thElements[1:thElements.index('Total')]:
+            if i != 'Qty in Kgs':
+                self.headers.append(i)
+        self.headers.remove('Amount(Rs.)')
+        self.headers.remove('Portability')
+        self.headers.remove('Auth Trans Time')
+        self.headers.append('Amount(Rs.)')
+        self.headers.append('Portability')
+        self.headers.append('Auth Trans Time')
 
-
-    def extract_headers(self, response):
-        self.data = pd.read_html(response.text)
-        for col_name in self.data[0].columns:
-            self.headers.append(col_name[2])
-        self.data[0].columns = self.headers
-
-    def extract_dataframe(self):
-        self.df = self.data[0]
+    def extract_dataframe(self, response, soup):
+        data = pd.read_html(response.text)
+        self.df = pd.DataFrame(data[0].values.tolist(), columns=self.headers)
         collist = [col for col in self.df.columns if self.df[col].dtype == 'float64' and self.df[col].iloc[-1] > 0]
         self.df.set_index('Date', inplace=True)
         self.df.drop(index='Total', inplace=True)
         self.df.index = self.df.index.map(lambda x: datetime.strptime(x, '%Y-%m-%d %H:%S'))
         self.dailysales = self.df.resample('D')[collist].sum()
-        self.dailysales = self.dailysales.merge(self.df.resample('D')[collist[0]].count().rename('Sale Count'),
+        self.dailysales = self.dailysales.merge(self.df.resample('D')['Wheat(Kgs)'].count().rename('Sale Count'),
                                                 on='Date')
         self.dailysales.index = self.dailysales.index.map(str).map(lambda x: x[0:10])
         self.dailysales.loc[-1] = self.dailysales.sum()
@@ -64,11 +59,6 @@ class SalesData:
         # Generate report or perform further operations on self.dailysales
         pass
 
-    def getDate(self):
-        return self.month, self.year
-
-
-        
 
 class RemainingCards:
     def __init__(self):
@@ -190,10 +180,9 @@ def main():
     sales_data.fetch_data()
 #     sales_data.generate_report()
 
-
     dataToFetch = RemainingCards()
     dataToFetch = dataToFetch.merge_sales_data(sales_data)
-    month , year = sales_data.getDate()
+    
     StatusClass = CardStatus(dataToFetch)
     Availability = StatusClass.fetch_status(month,year)
     
