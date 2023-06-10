@@ -193,8 +193,8 @@ def main():
     StatusClass = CardStatus(dataToFetch)
     Availability = StatusClass.fetch_status(month,year)
     
-    ExcelData= SaveData(sales_data , Availability)
-    ExcelData.saveFiles()
+    # ExcelData= SaveData(sales_data , Availability)
+    # ExcelData.saveFiles()
 
     return Availability
     
