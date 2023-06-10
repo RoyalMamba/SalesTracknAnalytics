@@ -99,6 +99,7 @@ class RemainingCards:
         self.calculate_probability()
         yetTOcome = self.cardBase[self.cardBase['SRC No'].isin(sales_data.df['SRC No'].astype('float'))==False].sort_values(by = 'REF').fillna(0).astype('int64').reset_index(drop = True)
         yetTOcome = yetTOcome.merge(self.probability, on = 'SRC No',how = 'left')
+        yetTOcome['Probability'] = yetTOcome['Probability'].replace(to_replace=np.nan ,value =100)
         # print(yetTOcome)
         return yetTOcome
 
