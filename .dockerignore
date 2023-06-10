@@ -5,3 +5,7 @@ README.md
 *.pyd
 __pycache__
 .pytest_cache
+venv/
+env/
+.venv/
+myenv/
