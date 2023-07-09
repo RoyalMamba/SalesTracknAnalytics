@@ -97,11 +97,13 @@ class RemainingCards:
     def merge_sales_data(self, sales_data):
         self.fetch_remaining_cards_data()
         self.calculate_probability()
-        yetTOcome = self.cardBase[self.cardBase['SRC No'].isin(sales_data.df['SRC No'].astype('float'))==False].sort_values(by = 'REF').fillna(0).astype('int64').reset_index(drop = True)
+        yetTOcome = self.cardBase[self.cardBase['SRC No'].isin(sales_data.df['SRC No'].astype('float'))==False].sort_values(by = 'REF').fillna(0)
+        yetTOcome.iloc[:,:3] = yetTOcome.iloc[:, :3].astype('int64')
+        yetTOcome['Mobile Number'] = yetTOcome['Mobile Number'].astype('int64')
+        yetTOcome.reset_index(drop=True)
         yetTOcome = yetTOcome.merge(self.probability, on = 'SRC No',how = 'left')
         yetTOcome['Probability'] = yetTOcome['Probability'].replace(to_replace=np.nan ,value =100)
-        # print(yetTOcome)
-        return yetTOcome
+        return yetTOcome[['SRC No', 'REF', 'Units', 'Probability', 'Mobile Number','Name']]
 
 
 class CardStatus:
@@ -184,8 +186,8 @@ def getStockreport():
     return sales_data
 
 def main():
-#     month = int(input('Enter the month: '))
-#     year = int(input("Enter the year: "))
+    # month = int(input('Enter the month: '))
+    # year = int(input("Enter the year: "))
     month = datetime.now().month
     year = datetime.now().year
 

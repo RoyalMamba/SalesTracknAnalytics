@@ -26,7 +26,7 @@
                     }
                 }
             });
-            
+
             var rows = document.querySelectorAll("table tr");
             for (var i = 1; i < rows.length; i++) {
                 var percentageCell = rows[i].cells[5];
@@ -50,6 +50,10 @@
         </div>
     </div>
     <h1 style="text-align: center;">Availability Table</h1>
-    {{ availability_table|safe }}
+    <div class="table-container">
+        <div class="table-div">
+            {{ availability_table|safe }}
+        </div>
+    </div>
 </body>
 </html>
