@@ -18,6 +18,7 @@ h1 {
   padding-bottom: 8px;
 }
 
+
 .table-container {
     overflow-x: auto;
     overflow-y: auto;
@@ -43,8 +44,13 @@ td:first-child {
     position: sticky;
     left: -1px;
     background-color: #4caf50; /* Optional: Set the background color for sticky elements */
-    color: #000000;
+    color: white;
     z-index: 2;
+}
+
+th:last-child,
+td:last-child {
+   text-align:left
 }
 
 thead th {
@@ -55,6 +61,7 @@ thead th {
     z-index: 1;
     
 }
+
 
 th {
     background-color: #f0f0f0; /* Set background color for table headers */
@@ -125,14 +132,43 @@ td {
   background-color: #45a049;
 }
 
-tbody td:first-child{
-  font-weight:bold;
+.green {
+  background-color: rgba(0, 255, 0, 0.3); /* Light green with 30% opacity */
 }
 
-tbody tr:last-child{
-  font-weight:bolder;
+.yellow {
+  background-color: rgba(255, 255, 0, 0.4); /* Light yellow with 40% opacity */
 }
 
- thead th:first-child{
-  color:white;
+.red {
+  background-color: rgba(255, 0, 0, 0.3); /* Light red with 30% opacity */
+}
+
+/* Add the CSS for the sorting arrows */
+.tablesorter-headerAsc::after,
+.tablesorter-headerDesc::after {
+    content: "";
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 4px 4px;
+    transition: border-color 0.2s;
+}
+
+.tablesorter-headerAsc::after {
+    border-color: transparent transparent #000000 transparent;
+}
+
+.tablesorter-headerDesc::after {
+    border-color: #000000 transparent transparent transparent;
+}
+
+
+table tbody tr:nth-child(even) td:not(:nth-child(6)) {
+  background-color: #f1f1f1; /* Shade for even rows */
+}
+
+table tbody tr:nth-child(odd) td:not(:nth-child(6)) {
+  background-color: #ffffff; /* Shade for odd rows */
 }
