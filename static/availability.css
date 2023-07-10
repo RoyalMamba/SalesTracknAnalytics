@@ -62,6 +62,9 @@ thead th {
     
 }
 
+thead th:first-child {
+  z-index: 3;
+}
 
 th {
     background-color: #f0f0f0; /* Set background color for table headers */
