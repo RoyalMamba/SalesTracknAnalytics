@@ -136,3 +136,11 @@ tbody tr:last-child{
  thead th:first-child{
   color:white;
 }
+
+table tbody tr:nth-child(even) td:not(:nth-child(1)) {
+  background-color: #f1f1f1; /* Shade for even rows */
+}
+
+table tbody tr:nth-child(odd) td:not(:nth-child(1)) {
+  background-color: #ffffff; /* Shade for odd rows */
+}
