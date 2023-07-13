@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, render_template , send_from_directory
+from flask import Flask, jsonify, render_template , send_from_directory , Markup
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -221,7 +221,8 @@ def get_availability():
     # sorted_availability = Availability.sort_values('REF')
 
     # Convert the sorted DataFrame to an HTML table
-    availability_table = Availability.to_html(index=True, classes='data-table')
+    Availability['Mobile Number'] = Availability['Mobile Number'].apply(lambda x: Markup(f'<a href="tel:{x}">{x}</a>'))
+    availability_table = Availability.to_html(index=True, classes='data-table' , escape= False)
 
     # Render the template and pass the availability table HTML
     return render_template('availability.html', availability_table=availability_table)
