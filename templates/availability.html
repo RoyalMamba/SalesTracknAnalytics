@@ -34,6 +34,21 @@
                     percentageCell.classList.add("red");
                 }
             }
+
+            // Retrieve clicked phone numbers from session storage and add the 'clicked' class
+            var clickedNumbers = JSON.parse(sessionStorage.getItem('clickedNumbers')) || [];
+            clickedNumbers.forEach(function(number) {
+                $('a[href="tel:' + number + '"]').addClass('clicked');
+            });
+
+            $('table').on('click', 'a', function() {
+                $(this).addClass('clicked');
+
+                // Store clicked phone numbers in session storage
+                var number = $(this).attr('href').substring(4);
+                clickedNumbers.push(number);
+                sessionStorage.setItem('clickedNumbers', JSON.stringify(clickedNumbers));
+            });
         });
     </script>
 </head>
