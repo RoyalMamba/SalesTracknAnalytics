@@ -137,7 +137,7 @@ class CardStatus:
 
     def fetch_status(self, month, year):
         status = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=216) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=700) as executor:
             futures = [executor.submit(self.make_request, i, month, year) for i in self.yetTOcome['SRC No']]
             for future in concurrent.futures.as_completed(futures):
                 result = future.result()
@@ -201,8 +201,8 @@ def main():
     StatusClass = CardStatus(dataToFetch)
     Availability = StatusClass.fetch_status(month,year)
     
-    ExcelData= SaveData(sales_data , Availability)
-    ExcelData.saveFiles()
+    # ExcelData= SaveData(sales_data , Availability)
+    # ExcelData.saveFiles()
 
     return Availability
     
