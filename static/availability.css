@@ -22,7 +22,7 @@ h1 {
 .table-container {
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 100vh; /* Adjust the height as needed */
+    max-height: 82vh; /* Adjust the height as needed */
     width: 100%; /* Set the width of the container */
     overscroll-behavior:contain;
 }

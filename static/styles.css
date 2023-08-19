@@ -21,7 +21,7 @@ h1 {
 .table-container, .table-div {
     overflow-x: auto;
     overflow-y: auto;
-    max-height: 100vh; /* Adjust the height as needed */
+    max-height: 82vh; /* Adjust the height as needed */
     width: 100%; /* Set the width of the container */
     overscroll-behavior: contain ;
 }
@@ -55,6 +55,10 @@ thead th {
     color:white;
     z-index: 1;
     
+}
+
+thead th:first-child {
+  z-index: 3;
 }
 
 th {
