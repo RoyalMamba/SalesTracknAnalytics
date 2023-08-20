@@ -1,15 +1,10 @@
 import asyncio
-import requests
+import aiohttp
 from bs4 import BeautifulSoup
 import time
-import pandas as pd 
-
-cardBase = pd.read_excel(r'dataset/Daily sales/data/remaningcards.xlsx')
-
-import asyncio
-import aiohttp
+import pandas as pd
 import concurrent.futures
-from bs4 import BeautifulSoup
+
 
 async def fetch_data(session, src_no, month, year):
     url = 'http://mahaepos.gov.in/SRC_Trans_Details.jsp'
@@ -17,7 +12,8 @@ async def fetch_data(session, src_no, month, year):
     async with session.post(url, data=data) as response:
         return await response.text()
 
-def scrape_data(html,src_no):
+
+def scrape_data(html, src_no):
     soup = BeautifulSoup(html, 'html.parser')
     target_heading = f"Transaction Details for RC : {src_no}"
     tables = soup.find_all('table')
@@ -37,21 +33,26 @@ def scrape_data(html,src_no):
     else:
         return src_no, 'Pending'
 
+
 async def main():
-    src_numbers = cardBase['SRC No'][:100] # Replace with your list of src_no values
+    global cardBase
+    src_numbers = cardBase['SRC No']
+    # Replace with your list of src_no values
     month = '08'
     year = '2023'
 
     async with aiohttp.ClientSession() as session:
-        tasks = [fetch_data(session, src_no, month, year) for src_no in src_numbers]
+        tasks = [fetch_data(session, src_no, month, year)
+                 for src_no in src_numbers]
         html_responses = await asyncio.gather(*tasks)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=512) as executor:
-        results = list(executor.map(scrape_data, html_responses,src_numbers))
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        results = list(executor.map(scrape_data, html_responses, src_numbers))
 
     for src_no, status in results:
         print(f"SRC No: {src_no}, Status: {status}")
 
+cardBase = pd.read_excel(r'dataset\Daily sales\data\remaningcards.xlsx')
 a = time.time()
 if __name__ == '__main__':
     asyncio.run(main())

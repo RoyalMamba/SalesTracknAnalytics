@@ -31,10 +31,14 @@ def make_request(i, month, year):
 
 cardBase = pd.read_excel(r'dataset/Daily sales/data/remaningcards.xlsx')
 
-a = time.time()
-with concurrent.futures.ThreadPoolExecutor(max_workers=512) as executor:
-    futures = [executor.submit(make_request,i,8,2023) for i in cardBase['SRC No'][:100]]
+def thfunction():
+    a = time.time()
+    with concurrent.futures.ThreadPoolExecutor(max_workers=512) as executor:
+        futures = [executor.submit(make_request,i,8,2023) for i in cardBase['SRC No']]
 
-    for future in concurrent.futures.as_completed(futures):
-        print(future.result())
-    print(time.time()-a)
+        for future in concurrent.futures.as_completed(futures):
+            print(future.result())
+        print(time.time()-a)
+
+if __name__  == '__main__':
+    thfunction()
