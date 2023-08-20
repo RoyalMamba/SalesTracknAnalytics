@@ -7,7 +7,7 @@ from dateutil import relativedelta
 import os
 import json
 import time
-import concurrent.futures
+# import concurrent.futures
 import numpy as np
 from dateutil import relativedelta 
 import asyncio
@@ -83,8 +83,8 @@ class RemainingCards:
 
         for location in self.pathlist:
             remdf = pd.read_excel(location, sheet_name=self.sheetname)
-            self.remaining_cards = pd.concat([remdf, self.remaining_cards], ignore_index=True)
-
+            self.remaining_cards = pd.concat([remdf, self.remaining_cards],
+                                             ignore_index=True)
 
     def calculate_probability(self):
         datestring = datetime.strptime('2022-08-01', '%Y-%m-%d')
@@ -106,6 +106,7 @@ class RemainingCards:
         yetTOcome = yetTOcome.merge(self.probability, on = 'SRC No',how = 'left')
         yetTOcome['Probability'] = yetTOcome['Probability'].replace(to_replace=np.nan ,value =100)
         return yetTOcome[['SRC No', 'REF', 'Units', 'Probability', 'Mobile Number','Name']]
+
 
 class CardStatus:
     def __init__(self, yetTOcome):
@@ -141,15 +142,15 @@ class CardStatus:
     async def fetch_status(self, month, year):
         src_numbers = self.yetTOcome['SRC No']
         tasks = []
+        # Using asyncio to do the task concurrently without increasing the vCPU and optimizing the code 
         async with aiohttp.ClientSession() as session:
             for src_no in src_numbers:
                 task = self.fetch_data(session, src_no, month, year)
                 tasks.append(task)
             html_responses = await asyncio.gather(*tasks)
 
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            results = list(executor.map(self.scrape_data, html_responses,
-                                        src_numbers))
+            results = [self.scrape_data(html, src_no) for html, src_no in
+                       zip(html_responses, src_numbers)]
 
         self.statusDataFrame = pd.DataFrame(results,
                                             columns=['SRC No', 'Status'])
