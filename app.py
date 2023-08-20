@@ -24,7 +24,7 @@ class SalesData:
 
     def fetch_data(self):
         response = requests.post('https://mahaepos.gov.in/FPS_Trans_Details.jsp',
-                                 data={'dist_code': 2518, 'fps_id': 251832900166, 'month': self.month, 'year': self.year})
+                                 data={'dist_code': 2518, 'fps_id': 251832900166, 'month': self.month, 'year': self.year},verify=False)
         
         response_html = response.text 
         soup = BeautifulSoup(response_html, 'html.parser')
