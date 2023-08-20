@@ -10,6 +10,9 @@ import time
 import concurrent.futures
 import numpy as np
 from dateutil import relativedelta 
+import asyncio
+import aiohttp
+
 
 app = Flask(__name__)
 
@@ -24,7 +27,7 @@ class SalesData:
 
     def fetch_data(self):
         response = requests.post('https://mahaepos.gov.in/FPS_Trans_Details.jsp',
-                                 data={'dist_code': 2518, 'fps_id': 251832900166, 'month': self.month, 'year': self.year})
+                                 data={'dist_code': 2518, 'fps_id': 251832900166, 'month': self.month, 'year': self.year}, verify=False)
         
         response_html = response.text 
         soup = BeautifulSoup(response_html, 'html.parser')
@@ -104,22 +107,22 @@ class RemainingCards:
         yetTOcome['Probability'] = yetTOcome['Probability'].replace(to_replace=np.nan ,value =100)
         return yetTOcome[['SRC No', 'REF', 'Units', 'Probability', 'Mobile Number','Name']]
 
-
 class CardStatus:
     def __init__(self, yetTOcome):
         self.yetTOcome = yetTOcome
-        self.statusDataFrame = []
-        # print(self.yetTOcome)
+        self.statusDataFrame = None
 
-    @staticmethod
-    def make_request(i, month, year):
+    async def fetch_data(self, session, src_no, month, year):
         url = 'http://mahaepos.gov.in/SRC_Trans_Details.jsp'
-        data = {'src_no': i, 'month': month, 'year': year}
-        response = requests.post(url, data=data)
-        soup = BeautifulSoup(response.text, 'html.parser')
-        target_heading = f"Transaction Details for RC : {i}"
+        data = {'src_no': src_no, 'month': month, 'year': year}
+        async with session.post(url, data=data) as response:
+            return await response.text()
+
+    def scrape_data(self, html, src_no):
+        soup = BeautifulSoup(html, 'html.parser')
+        target_heading = f"Transaction Details for RC : {src_no}"
         tables = soup.find_all('table')
-        if len(tables)>2:
+        if len(tables) > 2:
             lastTable = tables[-1]
             heading = lastTable.find('td')
             if heading.text.strip() == target_heading:
@@ -127,26 +130,36 @@ class CardStatus:
                 trElements = target_table.findChildren('tr')
                 tdElements = trElements[-1].findChildren('td')
                 if tdElements[2].text != '251832900166':
-                    return i, f'{tdElements[2].text}'
+                    return src_no, f'{tdElements[2].text}'
                 else:
-                    return i, 'Taken'
+                    return src_no, 'Taken'
             else:
-                return i, 'Pending'
-        else :
-            return i, 'Pending'
+                return src_no, 'Pending'
+        else:
+            return src_no, 'Pending'
 
-    def fetch_status(self, month, year):
-        status = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=700) as executor:
-            futures = [executor.submit(self.make_request, i, month, year) for i in self.yetTOcome['SRC No']]
-            for future in concurrent.futures.as_completed(futures):
-                result = future.result()
-                status.append(result)
+    async def fetch_status(self, month, year):
+        src_numbers = self.yetTOcome['SRC No']
+        tasks = []
+        async with aiohttp.ClientSession() as session:
+            for src_no in src_numbers:
+                task = self.fetch_data(session, src_no, month, year)
+                tasks.append(task)
+            html_responses = await asyncio.gather(*tasks)
 
-        self.statusDataFrame = pd.DataFrame(status, columns=['SRC No', 'Status'])
-        cardStatus = self.statusDataFrame.merge(self.yetTOcome , on = 'SRC No' , how='left')
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            results = list(executor.map(self.scrape_data, html_responses,
+                                        src_numbers))
+
+        self.statusDataFrame = pd.DataFrame(results,
+                                            columns=['SRC No', 'Status'])
+        
+        cardStatus = self.statusDataFrame.merge(self.yetTOcome,
+                                                on='SRC No', how='left')
         # print(cardStatus)
-        cardStatus['REF'] = cardStatus['REF'].replace(to_replace=0 , value=np.nan)
+        cardStatus['REF'] = cardStatus['REF'].replace(to_replace=0,
+                                                       value=np.nan)
+        
         cardStatus =  cardStatus.sort_values(by=['REF','SRC No'])
         cardStatus['REF'] =  cardStatus['REF'].fillna(0).astype('int')
         cardStatus.reset_index(drop=True , inplace=True)
@@ -198,8 +211,8 @@ def main():
     dataToFetch = RemainingCards()
     dataToFetch = dataToFetch.merge_sales_data(sales_data)
     month , year = sales_data.getDate()
-    StatusClass = CardStatus(dataToFetch)
-    Availability = StatusClass.fetch_status(month,year)
+    status_class = CardStatus(dataToFetch)
+    Availability = asyncio.run(status_class.fetch_status(month, year))
     
     # ExcelData= SaveData(sales_data , Availability)
     # ExcelData.saveFiles()
